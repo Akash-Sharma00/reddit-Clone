@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "185424047153",
+    "project_id": "red-it-d87d6",
+    "storage_bucket": "red-it-d87d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185424047153:android:124a2a9c5bfea7e174b910",
+        "android_client_info": {
+          "package_name": "com.example.red_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185424047153-vkkv1bmh2saivhlrunosekn1klkr2h82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.red_it",
+            "certificate_hash": "5b1046c00f86251a94272dda0443f328053d3d64"
+          }
+        },
+        {
+          "client_id": "185424047153-h95c78l8bql19bmp0qpnulutiq0fm7bs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPUf7Ah4obBZ4GiM8cmRDtHgKBiwLYofU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185424047153-h95c78l8bql19bmp0qpnulutiq0fm7bs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "185424047153-i99imphuj12mbcvfj12nqc5vg1cqm6j6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.redIt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
