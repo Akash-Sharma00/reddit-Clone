@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:red_it/core/constants/constant.dart';
 import 'package:red_it/core/constants/firebase_constant.dart';
 import 'package:red_it/core/failure.dart';
-import 'package:red_it/core/firebase_provider.dart';
+import 'package:red_it/core/providers/firebase_provider.dart';
 import 'package:red_it/core/type_def.dart';
 import 'package:red_it/models/user_model.dart';
 
