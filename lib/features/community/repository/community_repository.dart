@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:red_it/core/constants/firebase_constant.dart';
 import 'package:red_it/core/failure.dart';
-import 'package:red_it/core/firebase_provider.dart';
+import 'package:red_it/core/providers/firebase_provider.dart';
 import 'package:red_it/core/type_def.dart';
 import 'package:red_it/models/community_model.dart';
 
@@ -23,7 +23,7 @@ class CommunityRepository {
       if (communityDoc.exists) {
         throw "Community with same already exists!";
       }
-      return right(_communities.doc().set(community.toMap()));
+      return right(_communities.doc(community.name).set(community.toMap()));
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
@@ -44,10 +44,42 @@ class CommunityRepository {
     });
   }
 
-  Stream <Community> getCommunityRepositoryByName(String name){
-    return _communities.doc(name).snapshots().map((event) => Community.fromMap(event.data() as Map<String ,dynamic>));
+  Stream<Community> getCommunityRepositoryByName(String name) {
+    return _communities.doc(name).snapshots().map(
+        (event) => Community.fromMap(event.data() as Map<String, dynamic>));
+  }
+ Stream<List<Community>> searchCommunity(String query) {
+    return _communities
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) + 1,
+                  ),
+        )
+        .snapshots()
+        .map((event) {
+      List<Community> communities = [];
+      for (var community in event.docs) {
+        communities.add(Community.fromMap(community.data() as Map<String, dynamic>));
+      }
+      return communities;
+    });
   }
 
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollection);
+
+  FutureVoid editCommunity(Community community) async {
+    try {
+      return right(_communities.doc(community.name).update(community.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 }
