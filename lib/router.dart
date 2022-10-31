@@ -6,6 +6,7 @@ import 'package:red_it/features/community/screens/create_community_screen.dart';
 import 'package:red_it/features/community/screens/edit_community_screen.dart';
 import 'package:red_it/features/community/screens/mod_tools_screen.dart';
 import 'package:red_it/features/home/homescreen.dart';
+import 'package:red_it/features/user_profile/screen/user_profile_scree.dart';
 import 'package:routemaster/routemaster.dart';
 
 final loggedOutRoute = RouteMap(
@@ -26,5 +27,6 @@ final loggedInRoute = RouteMap(
     '/mod-tools/:name': (route) =>  MaterialPage(child: ModToolsScreen(name:route.pathParameters['name']!,)),
     '/edit-community/:name': (route) =>  MaterialPage(child: EditCommunityScreen(name:route.pathParameters['name']!,)),
     '/add-mod/:name': (route) =>  MaterialPage(child: AddModScreen(name:route.pathParameters['name']!,)),
+    '/u/:uid': (route) =>  MaterialPage(child: USerProfileScreen(uid:route.pathParameters['uid']!,)),
   },
 );
