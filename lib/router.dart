@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:red_it/features/community/screens/add_mod_scree.dart';
 import 'package:red_it/features/community/screens/community_screen.dart';
 import 'package:red_it/features/auth/screen/login_screen.dart';
 import 'package:red_it/features/community/screens/create_community_screen.dart';
@@ -24,5 +25,6 @@ final loggedInRoute = RouteMap(
         )),
     '/mod-tools/:name': (route) =>  MaterialPage(child: ModToolsScreen(name:route.pathParameters['name']!,)),
     '/edit-community/:name': (route) =>  MaterialPage(child: EditCommunityScreen(name:route.pathParameters['name']!,)),
+    '/add-mod/:name': (route) =>  MaterialPage(child: AddModScreen(name:route.pathParameters['name']!,)),
   },
 );

@@ -31,6 +31,36 @@ class CommunityRepository {
     }
   }
 
+  FutureVoid joinCommunity(String communityName, String userId) async {
+    try {
+      return right(_communities.doc(communityName).update({'members':FieldValue.arrayUnion([userId])}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid addMods(String communityName, List<String> userId) async {
+    try {
+      return right(_communities.doc(communityName).update({'mods':userId}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid leaveCommunity(String communityName, String userId) async {
+    try {
+      return right(_communities.doc(communityName).update({'members':FieldValue.arrayRemove([userId])}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   Stream<List<Community>> getUSerCommunity(String uid) {
     return _communities
         .where('members', arrayContains: uid)
@@ -48,7 +78,8 @@ class CommunityRepository {
     return _communities.doc(name).snapshots().map(
         (event) => Community.fromMap(event.data() as Map<String, dynamic>));
   }
- Stream<List<Community>> searchCommunity(String query) {
+
+  Stream<List<Community>> searchCommunity(String query) {
     return _communities
         .where(
           'name',
@@ -64,7 +95,8 @@ class CommunityRepository {
         .map((event) {
       List<Community> communities = [];
       for (var community in event.docs) {
-        communities.add(Community.fromMap(community.data() as Map<String, dynamic>));
+        communities
+            .add(Community.fromMap(community.data() as Map<String, dynamic>));
       }
       return communities;
     });
