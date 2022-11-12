@@ -44,7 +44,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return ref.watch(authAtateChangeProvider).when(
         data: (data) => MaterialApp.router(
               title: 'Reddit',
-              theme: Pallete.darkModeAppTheme,
+              theme: ref.watch(themeNotifiereProvider),
               // home: const LoginScreen(),
               routerDelegate: RoutemasterDelegate(
                 routesBuilder: (context) {

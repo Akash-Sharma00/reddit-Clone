@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_it/features/auth/controller/auth_controller.dart';
+import 'package:red_it/features/user_profile/controller/user_profile_controller.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
@@ -57,9 +58,9 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
     }
   }
 
-  void save(Community community) {
-    ref.read(communityControllerProvider.notifier).editCommunity(
-        community: community,
+  void save() {
+    ref.read(userProfileControllerProvider.notifier).editCommunity(
+        name: nameController.text,
         bannerFile: bannerFile,
         profileFile: profileFile,
         context: context);
@@ -71,10 +72,12 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
         data: (data) => Scaffold(
               backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
               appBar: AppBar(
-                title: const Text("Edit Community"),
+                title: const Text("Edit Profile"),
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      save();
+                    },
                     child: const Text("Save"),
                   ),
                 ],

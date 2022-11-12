@@ -1,10 +1,24 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:red_it/features/auth/controller/auth_controller.dart';
+import 'package:red_it/models/user_model.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/utils.dart';
 import '../repository/user_profile_repository.dart';
+
+final userProfileControllerProvider =
+    StateNotifierProvider<UserProfileController, bool>((ref) {
+  final userProfileRepository = ref.watch(userRepositoryProvider);
+  return UserProfileController(
+      communityRepository: userProfileRepository,
+      ref: ref,
+      storageRepository: ref.watch(FirebaseStorageProvider));
+});
+
 
 class UserProfileController extends StateNotifier<bool> {
   final UserRepository _userRepository;
@@ -20,24 +34,29 @@ class UserProfileController extends StateNotifier<bool> {
         super(false);
 
   void editCommunity(
-      {required Community community,
-      required File? bannerFile,
+      {required File? bannerFile,
       required File? profileFile,
+      required String name,
       required BuildContext context}) async {
+    UserModal user = _ref.read(userProvider)!;
     if (profileFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'communities/profile', id: community.name, file: profileFile);
+          path: 'users/profile', id: user.uid, file: profileFile);
       res.fold((l) => showSnackBar(context, l.message),
-          (r) => community = community.copyWith(avatar: r));
+          (r) => user = user.copyWith(profilePic: r));
     }
+
     if (bannerFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'communities/banner', id: community.name, file: bannerFile);
+          path: 'user/banner', id: user.uid, file: bannerFile);
       res.fold((l) => showSnackBar(context, l.message),
-          (r) => community = community.copyWith(banner: r));
+          (r) => user = user.copyWith(banner: r));
     }
-    final res = await _communityRepository.editCommunity(community);
-    res.fold((l) => showSnackBar(context, l.message),
-        (r) => Routemaster.of(context).pop());
+    user = user.copyWith(name: name);
+    final res = await _userRepository.editCommunity(user);
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      _ref.read(userProvider.notifier).update((state) => user);
+      Routemaster.of(context).pop();
+    });
   }
 }
