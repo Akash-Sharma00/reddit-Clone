@@ -52,14 +52,15 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(themeNotifiereProvider);
     return ref.watch(getCommunityByNameProvider(widget.name)).when(
         data: (data) => Scaffold(
-              backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
+              backgroundColor: theme.backgroundColor,
               appBar: AppBar(
                 title: const Text("Edit Community"),
                 actions: [
                   TextButton(
-                    onPressed: () =>save(data),
+                    onPressed: () => save(data),
                     child: const Text("Save"),
                   ),
                 ],
@@ -77,8 +78,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                             child: DottedBorder(
                               borderType: BorderType.RRect,
                               radius: const Radius.circular(10),
-                              color: Pallete
-                                  .darkModeAppTheme.textTheme.bodyText2!.color!,
+                              color: theme.textTheme.bodyText2!.color!,
                               strokeCap: StrokeCap.round,
                               dashPattern: const [10, 4],
                               child: Container(
@@ -90,7 +90,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                     ? Image.file(bannerFile!)
                                     : data.banner.isEmpty ||
                                             data.banner ==
-                                                Contstant.bannerDefault
+                                                Constants.bannerDefault
                                         ? const Center(
                                             child: Icon(
                                               Icons.camera_alt_outlined,

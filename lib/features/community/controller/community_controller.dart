@@ -25,7 +25,7 @@ final communityControllerProvider =
   return CommunityController(
       communityRepository: communityRepository,
       ref: ref,
-      storageRepository: ref.watch(FirebaseStorageProvider));
+      storageRepository: ref.watch(firebaseStorageProvider));
 });
 
 final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
@@ -57,8 +57,8 @@ class CommunityController extends StateNotifier<bool> {
     Community community = Community(
         id: name,
         name: name,
-        banner: Contstant.bannerDefault,
-        avatar: Contstant.avatarDefault,
+        banner: Constants.bannerDefault,
+        avatar: Constants.avatarDefault,
         members: [uid],
         mods: [uid]);
     final res = await _communityRepository.createCommunity(community);

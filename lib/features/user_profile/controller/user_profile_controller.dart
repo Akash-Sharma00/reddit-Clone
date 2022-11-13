@@ -8,6 +8,7 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/utils.dart';
+import '../../../models/post_modal.dart';
 import '../repository/user_profile_repository.dart';
 
 final userProfileControllerProvider =
@@ -16,7 +17,12 @@ final userProfileControllerProvider =
   return UserProfileController(
       communityRepository: userProfileRepository,
       ref: ref,
-      storageRepository: ref.watch(FirebaseStorageProvider));
+      storageRepository: ref.watch(firebaseStorageProvider));
+});
+
+
+final getUserPostsProvider = StreamProvider.family((ref, String uid) {
+  return ref.read(userProfileControllerProvider.notifier).getUserPosts(uid);
 });
 
 
@@ -59,4 +65,15 @@ class UserProfileController extends StateNotifier<bool> {
       Routemaster.of(context).pop();
     });
   }
+    Stream<List<Post>> getUserPosts(String uid) {
+    return _userRepository.getUserPosts(uid);
+  }
+
+  // void updateUserKarma(UserKarma karma) async {
+  //   UserModal user = _ref.read(userProvider)!;
+  //   user = user.copyWith(karma: user.karma + karma.karma);
+
+  //   // final res = await _userProfileRepository.updateUserKarma(user);
+  //   res.fold((l) => null, (r) => _ref.read(userProvider.notifier).update((state) => user));
+  // }
 }

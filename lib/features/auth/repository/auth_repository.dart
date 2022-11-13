@@ -50,8 +50,8 @@ class AuthRepository {
         userModal = UserModal(
             name: userCredential.user!.displayName ?? "Untitled",
             profilePic:
-                userCredential.user!.photoURL ?? Contstant.avatarDefault,
-            banner: Contstant.bannerDefault,
+                userCredential.user!.photoURL ?? Constants.avatarDefault,
+            banner: Constants.bannerDefault,
             uid: userCredential.user!.uid,
             isAuthenticated: true,
             karma: 0,
@@ -75,6 +75,6 @@ class AuthRepository {
 
   void logOut() async {
     await _googleSignIn.signOut();
-   await _auth.signOut(); 
+    await _auth.signOut();
   }
 }

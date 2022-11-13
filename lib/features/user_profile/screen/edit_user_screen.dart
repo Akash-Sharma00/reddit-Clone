@@ -10,9 +10,7 @@ import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/utils.dart';
-import '../../../models/community_model.dart';
 import '../../../theme/pallete.dart';
-import '../../community/controller/community_controller.dart';
 
 class EditUserScreen extends ConsumerStatefulWidget {
   final String uid;
@@ -35,7 +33,6 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     nameController.dispose();
   }
@@ -68,9 +65,10 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeNotifiereProvider);
     return ref.watch(getUserDataProvider(widget.uid)).when(
         data: (data) => Scaffold(
-              backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
+              backgroundColor: currentTheme.backgroundColor,
               appBar: AppBar(
                 title: const Text("Edit Profile"),
                 actions: [
@@ -95,8 +93,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                             child: DottedBorder(
                               borderType: BorderType.RRect,
                               radius: const Radius.circular(10),
-                              color: Pallete
-                                  .darkModeAppTheme.textTheme.bodyText2!.color!,
+                              color: currentTheme.textTheme.bodyText2!.color!,
                               strokeCap: StrokeCap.round,
                               dashPattern: const [10, 4],
                               child: Container(
@@ -108,7 +105,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                                     ? Image.file(bannerFile!)
                                     : data.banner.isEmpty ||
                                             data.banner ==
-                                                Contstant.bannerDefault
+                                                Constants.bannerDefault
                                         ? const Center(
                                             child: Icon(
                                               Icons.camera_alt_outlined,
@@ -149,7 +146,7 @@ class _EditUserScreenState extends ConsumerState<EditUserScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(18),
+                        contentPadding: const EdgeInsets.all(18),
                       ),
                     ),
                   ],
