@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:red_it/core/common/error_text.dart';
 import 'package:red_it/core/common/loader.dart';
 import 'package:red_it/features/auth/controller/auth_controller.dart';
-import 'package:red_it/features/auth/screen/login_screen.dart';
 import 'package:red_it/models/user_model.dart';
 import 'package:red_it/router.dart';
 import 'package:red_it/theme/pallete.dart';
@@ -44,7 +43,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return ref.watch(authAtateChangeProvider).when(
         data: (data) => MaterialApp.router(
               title: 'Reddit',
-              theme: Pallete.darkModeAppTheme,
+              theme: ref.watch(themeNotifiereProvider),
               // home: const LoginScreen(),
               routerDelegate: RoutemasterDelegate(
                 routesBuilder: (context) {
@@ -60,7 +59,7 @@ class _MyAppState extends ConsumerState<MyApp> {
               routeInformationParser: const RoutemasterParser(),
             ),
         error: (error, stackTrace) => ErrorText(error: error.toString()),
-        loading: () => Loader());
+        loading: () => const Loader());
   }
 }
 

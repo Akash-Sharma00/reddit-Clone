@@ -7,7 +7,7 @@ import 'package:red_it/core/failure.dart';
 import 'package:red_it/core/providers/firebase_provider.dart';
 import 'package:red_it/core/type_def.dart';
 
-final FirebaseStorageProvider = Provider(
+final firebaseStorageProvider = Provider(
     (ref) => StorageRepository(firebaseStorage: ref.watch(storageProvider)));
 
 class StorageRepository {

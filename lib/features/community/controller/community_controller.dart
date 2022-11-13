@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:red_it/core/constants/constant.dart';
 import 'package:red_it/core/providers/storage_repository.dart';
 import 'package:red_it/core/utils.dart';
@@ -10,6 +11,8 @@ import 'package:red_it/features/auth/controller/auth_controller.dart';
 import 'package:red_it/features/community/repository/community_repository.dart';
 import 'package:red_it/models/community_model.dart';
 import 'package:routemaster/routemaster.dart';
+
+import '../../../core/failure.dart';
 
 final userCommunitiesProvider = StreamProvider((ref) {
   final communityController = ref.watch(communityControllerProvider.notifier);
@@ -22,7 +25,7 @@ final communityControllerProvider =
   return CommunityController(
       communityRepository: communityRepository,
       ref: ref,
-      storageRepository: ref.watch(FirebaseStorageProvider));
+      storageRepository: ref.watch(firebaseStorageProvider));
 });
 
 final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
@@ -31,7 +34,7 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
       .getCommunityRepository(name);
 });
 
-final searchCommunityProvider = StreamProvider.family((ref,String query) {
+final searchCommunityProvider = StreamProvider.family((ref, String query) {
   return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
 });
 
@@ -54,8 +57,8 @@ class CommunityController extends StateNotifier<bool> {
     Community community = Community(
         id: name,
         name: name,
-        banner: Contstant.bannerDefault,
-        avatar: Contstant.avatarDefault,
+        banner: Constants.bannerDefault,
+        avatar: Constants.avatarDefault,
         members: [uid],
         mods: [uid]);
     final res = await _communityRepository.createCommunity(community);
@@ -64,6 +67,30 @@ class CommunityController extends StateNotifier<bool> {
       showSnackBar(context, "Community Created Successfully");
       Routemaster.of(context).pop();
     });
+  }
+
+  void joinCommunity(Community community, BuildContext context) async {
+    Either<Failure, void> res;
+    final user = _ref.read(userProvider)!;
+    if (community.members.contains(user.uid)) {
+      res = await _communityRepository.leaveCommunity(community.name, user.uid);
+    } else {
+      res = await _communityRepository.joinCommunity(community.name, user.uid);
+    }
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      if (community.members.contains(user.uid)) {
+        showSnackBar(context, "Successsfully Leaved community");
+      } else {
+        showSnackBar(context, "Successsfully Joined community");
+      }
+    });
+  }
+
+  addMods(
+      String communityName, List<String> userId, BuildContext context) async {
+    final res = await _communityRepository.addMods(communityName, userId);
+    res.fold((l) => showSnackBar(context, l.message),
+        (r) => Routemaster.of(context).pop());
   }
 
   Stream<Community> getCommunityRepository(String name) {

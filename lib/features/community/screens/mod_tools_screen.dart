@@ -9,6 +9,9 @@ class ModToolsScreen extends ConsumerWidget {
   navigateToEditCommunity(BuildContext context) {
     Routemaster.of(context).push('/edit-community/$name');
   }
+  navigateToAddModScreen(BuildContext context) {
+    Routemaster.of(context).push('/add-mod/$name');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +24,7 @@ class ModToolsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.add_moderator),
             title: const Text("Add Moderator"),
-            onTap: () {},
+            onTap: () =>navigateToAddModScreen(context),
           ),
           ListTile(
             leading: const Icon(Icons.edit),
