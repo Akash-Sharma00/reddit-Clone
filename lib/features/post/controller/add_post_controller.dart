@@ -3,13 +3,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:red_it/features/user_profile/controller/user_profile_controller.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/utils.dart';
-import '../../../models/comment_modal.dart';
 import '../../../models/community_model.dart';
 import '../../../models/post_modal.dart';
 import '../../auth/controller/auth_controller.dart';
@@ -164,7 +162,7 @@ class PostController extends StateNotifier<bool> {
         (r) => showSnackBar(context, 'Post Deleted successfully!'));
   }
 
-   void upvote(Post post) async {
+  void upvote(Post post) async {
     final uid = _ref.read(userProvider)!.uid;
     _postRepository.upvote(post, uid);
   }
@@ -173,7 +171,8 @@ class PostController extends StateNotifier<bool> {
     final uid = _ref.read(userProvider)!.uid;
     _postRepository.downvote(post, uid);
   }
-   void awardPost({
+
+  void awardPost({
     required Post post,
     required String award,
     required BuildContext context,
@@ -190,9 +189,11 @@ class PostController extends StateNotifier<bool> {
       });
       Routemaster.of(context).pop();
     });
+
+  }
+    Stream<Post> getPostById(String postId) {
+    return _postRepository.getPostById(postId);
   }
 
-  // Stream<List<Comment>> fetchPostComments(String postId) {
-  //   return _postRepository.getCommentsOfPost(postId);
-  // }
 }
+

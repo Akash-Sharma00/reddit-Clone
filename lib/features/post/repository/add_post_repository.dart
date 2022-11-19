@@ -19,6 +19,11 @@ final postRepositoryProvider = Provider((ref) {
   return PostRepository(firestore: ref.watch(firestoreProvider));
 });
 
+final getPostByIdProvider = StreamProvider.family((ref, String postId) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.getPostById(postId);
+});
+
 class PostRepository {
   final FirebaseFirestore _firestore;
   PostRepository({required FirebaseFirestore firestore})
@@ -113,5 +118,8 @@ class PostRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+  Stream<Post> getPostById(String postId) {
+    return _post.doc(postId).snapshots().map((event) => Post.fromMap(event.data() as Map<String, dynamic>));
   }
 }
